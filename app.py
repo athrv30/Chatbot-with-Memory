@@ -1,24 +1,22 @@
-
 import streamlit as st
 from langchain_community.chat_models import ChatOpenAI
 from langchain.chains import ConversationChain
 from langchain.memory import ConversationBufferMemory
 from langchain.schema import AIMessage, HumanMessage
-from dotenv import load_dotenv
 import os
 
-# Load .env variables
-load_dotenv()
+# ✅ Set OpenAI key from Streamlit Secrets
+os.environ["OPENAI_API_KEY"] = st.secrets["OPENAI_API_KEY"]
 
-# Set page title
+# 🎯 Streamlit page setup
 st.set_page_config(page_title="Chatbot with Memory", layout="centered")
 st.title("🧠 Chatbot with Memory")
 
-# Initialize session state
+# ✅ Initialize session state for chat history
 if "chat_history" not in st.session_state:
     st.session_state.chat_history = []
 
-# Initialize OpenAI Chat Model with memory
+# ✅ Function to create the LangChain conversation chain
 def get_chain():
     memory = ConversationBufferMemory(return_messages=True)
     return ConversationChain(
@@ -27,19 +25,19 @@ def get_chain():
         verbose=False
     )
 
-# Load or create chain
+# ✅ Initialize the chain if not already in session
 if "chain" not in st.session_state:
     st.session_state.chain = get_chain()
 
-# User input
+# 📥 Input box
 user_input = st.text_input("Ask something...", key="user_input")
 
-# Handle input
+# 💬 Handle input and response
 if user_input:
     response = st.session_state.chain.run(user_input)
     st.session_state.chat_history.append((user_input, response))
 
-# Display conversation
+# 🧾 Display chat history
 for i, (user_msg, ai_msg) in enumerate(st.session_state.chat_history):
     st.markdown(f"**You:** {user_msg}")
     st.markdown(f"**Bot:** {ai_msg}")
