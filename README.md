@@ -14,3 +14,10 @@ Install dependencies:
 
 ```bash
 pip install -r requirements.txt
+
+## 🚀 Usage
+
+1. Add your OpenAI API key in Streamlit Cloud secrets:
+   ```toml
+   OPENAI_API_KEY = "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+
